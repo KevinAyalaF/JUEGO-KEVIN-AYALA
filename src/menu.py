@@ -41,7 +41,7 @@ class MenuItem:
         surface.blit(self.rendered_text, self.rect)
 
 # Definir la clase Menu
-class Menu:
+class Item:
     def __init__(self, items):
         self.items = []
         for item in items:
@@ -59,9 +59,9 @@ class Menu:
 
 # Crear el menú con los elementos deseados
 menu_items = ["play", "exit"]
-menu = Menu(menu_items)
+menu = Item(menu_items)
 niveles = ["LEVEL 1", "LEVEL 2", "LEVEL 3", "salir"]
-nivel = Menu(niveles)
+nivel = Item(niveles)
 flag = False
 # Bucle principal del juego
 while True:
@@ -87,3 +87,5 @@ while True:
     else:
         nivel.draw(pantalla)
     pygame.display.flip()  # Actualizar la pantalla
+
+

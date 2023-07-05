@@ -37,16 +37,17 @@ class Character(pygame.sprite.Sprite):
         self.screen = screen
         #ataque
         self.count = 0
+        self.playing = True
 
         
     #Animaciones
-    def animate(self, animation):
+    def animate(self, animation, con):
         animations = self.animations[animation]  #Lista de Animaciones
         tam = len(animations)
         if self.step_counter >= tam:   #Si el contador es mayor al tamaño de la lista se reinicia el contador a 0
             self.step_counter = 0
         self.image = animations[int(self.step_counter)]
-        self.step_counter += 0.1
+        self.step_counter += con
 
     #Movimiento
     def move(self):
@@ -77,51 +78,73 @@ class Character(pygame.sprite.Sprite):
                 break
             else:
                 self.fall = True
-            
+
     #Ataque
-    def attack(self):
-        pass
-    
     #Detener animaciones y movimientos
     def stop(self):
-        pass
+        self.playing = False
+    def resume(self):
+        self.playing = True
     #MOVIMIENTOS
     def update(self):
-        match(self.state):
-            #DERECHA-------
-            case "camina_derecha":
-                if not self.jumping:
-                    self.what_animation = "camina_derecha"
-                self.move()
-            #IZQUIERDA----------------------------
-            case "camina_izquierda":
-                if not self.jumping:
-                    self.what_animation = "camina_izquierda"
-                self.move()
-            #--------------------------------------------------------------------------
-            case "salta":
-                if not self.jumping:
-                    self.jumping = True
-                    self.displacement_y = -15
-            # case "ataque":
-            #     if self.left:
-            #         self.what_animation = "ataca_izquierda"
-            #     else:
-            #         self.what_animation = "ataca_derecha"
-            #Animacion cuando esta quieto
-            case "quieto":
-                if not self.jumping:
+        if self.playing:
+            match(self.state):
+                #DERECHA-------
+                case "camina_derecha":
+                    if not self.jumping:
+                        self.what_animation = "camina_derecha"
+                    self.move()
+                    con = 0.2
+                #IZQUIERDA----------------------------
+                case "camina_izquierda":
+                    if not self.jumping:
+                        self.what_animation = "camina_izquierda"
+                    self.move()
+                    con = 0.2
+                #--------------------------------------------------------------------------
+                case "salta":
+                    if not self.jumping:
+                        self.jumping = True
+                        self.displacement_y = -15
+                case "ataque":
                     if self.left:
-                        self.what_animation = "quieto_izquierda"
+                        self.what_animation = "ataca_izquierda"
                     else:
-                        self.what_animation = "quieto_derecha"
+                        self.what_animation = "ataca_derecha"
+                    con = 0.4
+                #Animacion cuando esta quieto
+                case "quieto":
+                    if not self.jumping:
+                        if self.left:
+                            self.what_animation = "quieto_izquierda"
+                        else:
+                            self.what_animation = "quieto_derecha"
+                    con = 0.2
 
-        if self.jumping:   #Mientra esta saltando se carga las animaciones
-            if self.left:
-                self.what_animation = "salta_izquierda"
-            else:
-                self.what_animation = "salta_derecha"
+            if self.jumping:   #Mientra esta saltando se carga las animaciones
+                if self.left:
+                    self.what_animation = "salta_izquierda"
+                else:
+                    self.what_animation = "salta_derecha"
+                con = 0.2
 
-        self.animate(self.what_animation)
-        self.jump()
-            
+            self.animate(self.what_animation, con)
+            self.jump()
+
+
+    def attack_rect(self):
+        if self.left:
+            return pygame.Rect(self.rect.left - 10, self.rect.top, 10, self.rect.height)
+        else:
+            return pygame.Rect(self.rect.right, self.rect.top, 10, self.rect.height)
+        
+    def check_collision(self, enemy_group):
+        attack_rect = self.attack_rect()
+        for enemy in enemy_group:
+            if attack_rect.colliderect(enemy.rect):
+                enemy.kill()
+
+    def update_attack(self, enemy_group):
+        if self.playing:
+            if self.state == "ataque":
+                self.check_collision(enemy_group)

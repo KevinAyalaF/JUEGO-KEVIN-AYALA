@@ -9,10 +9,17 @@ class Attack(pygame.sprite.Sprite):
         self.rect.midbottom = position
         self.floor = piso
         self.speed_y = speed_y
+        self.speed_actual = speed_y
+        self.playing = True
 
     def update(self):
-        self.rect.y += self.speed_y
-        if self.rect.bottom > self.floor:
-            self.kill()
+        if self.playing:
+            self.rect.y += self.speed_y
+            if self.rect.bottom > self.floor:
+                self.kill()
     def stop(self):
-        pass
+        self.playing = False
+        self.speed_y = 0
+    def resume(self):
+        self.playing = True
+        self.speed_y = self.speed_actual

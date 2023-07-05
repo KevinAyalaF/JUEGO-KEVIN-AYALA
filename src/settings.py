@@ -1,3 +1,5 @@
+import pygame
+pygame.mixer.init()
 #CONFIGURACION DE PANTALLA----------------
 WIDTH = 1320
 HEIGHT = 560
@@ -46,3 +48,80 @@ lista_superficie = [(0, 514, 1320, 44),
                     (918, 249, WIDTH - 920, 15)
 ]
 
+# ///////////////////////////////////////////////////////////////////////////////
+menu_items = [
+    {
+        'text': 'play',
+        'position': (WIDTH // 2, HEIGHT // 2),
+        'normal_color': WHITE,
+        'hover_color': GREEN
+    },
+    {
+        'text': 'exit',
+        'position': (WIDTH // 2, HEIGHT // 2 + 100),
+        'normal_color': WHITE,
+        'hover_color': RED
+    }
+]
+game_over_items = [
+    {
+        "text": "try again",
+        "position": (200, 300),
+        "normal_color": RED,
+        "hover_color": WHITE
+    },
+    {
+        "text": "Return menu",
+        "position": (400, 300),
+        "normal_color": WHITE,
+        "hover_color": GREEN
+    }
+]
+
+level_item = [
+    {
+        "text": "LEVEL 1",
+        "position": (WIDTH // 2, HEIGHT // 2 - 100),
+        "normal_color": WHITE,
+        "hover_color": GREEN
+    },
+    {
+        "text": "LEVEL 2",
+        "position": (WIDTH // 2, HEIGHT // 2),
+        "normal_color": WHITE,
+        "hover_color": GREEN
+    },
+    {
+        "text": "LEVEL 3",
+        "position": (WIDTH // 2, HEIGHT // 2 + 100),
+        "normal_color": WHITE,
+        "hover_color": GREEN
+    },
+    {
+        "text": "BACK",
+        "position": (WIDTH // 2, HEIGHT // 2 + 200),
+        "normal_color": WHITE,
+        "hover_color": GREEN
+    }
+]
+pause_items = [
+    {
+        'text': 'REANUDE',
+        'position': (WIDTH // 2, HEIGHT // 2),
+        'normal_color': WHITE,
+        'hover_color': GREEN
+    },
+    {
+        'text': 'EXIT',
+        'position': (WIDTH // 2, HEIGHT // 2 + 100),
+        'normal_color': WHITE,
+        'hover_color': RED
+    }
+]
+
+music_menu = pygame.mixer.music.load("src/resources/sound/sound_menu.mp3")
+music_level_1 = pygame.mixer.music.load("src/resources/sound/sound_dificult_1.mp3")
+music_level_2 = pygame.mixer.music.load("src/resources/sound/sound_dificult_2.mp3")
+music_level_3 = pygame.mixer.music.load("src/resources/sound/sound_dificult_3.mp3")
+
+lista_musica = [music_menu, music_level_1, music_level_2, music_level_3]
